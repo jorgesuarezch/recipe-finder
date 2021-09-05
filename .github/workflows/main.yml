@@ -35,9 +35,9 @@ jobs:
       - name: Save build folder
         uses: actions/upload-artifact@v2
         with:
-          name: build
+          name: next-build
           if-no-files-found: error
-          path: build
+          path: .next
 
   e2e:
     needs: setup
@@ -49,8 +49,8 @@ jobs:
       - name: Download the build folders
         uses: actions/download-artifact@v2
         with:
-          name: build
-          path: build
+          name: next-build
+          path: .next
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
