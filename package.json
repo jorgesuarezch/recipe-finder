@@ -10,9 +10,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci",
-    "cypress": "cypress open",
+    "cypress": "cypress",
+    "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "e2e": "start-server-and-test start http://localhost:3000 cypress",
+    "e2e": "start-server-and-test start http://localhost:3000 cypress:open",
     "e2e:ci": "start-server-and-test start http://localhost:3000 cypress:run"
   },
   "dependencies": {
