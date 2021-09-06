@@ -1,9 +1,12 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useMealsOfTheDay } from '~/providers/MealsOfTheDayContext'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
+  const { state } = useMealsOfTheDay()
+  console.log('🚀 ~ file: index.tsx ~ line 11 ~ state', state)
   return (
     <div className={styles.container}>
       <Head>
