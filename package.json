@@ -6,7 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --ci",
+    "cypress": "cypress",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "e2e": "start-server-and-test start http://localhost:3000 cypress:open",
+    "e2e:ci": "start-server-and-test start http://localhost:3000 cypress:run"
   },
   "dependencies": {
     "@emotion/react": "^11.4.1",
@@ -19,9 +27,18 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
     "@types/react": "17.0.19",
+    "babel-jest": "^27.1.0",
+    "cypress": "^8.3.1",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.1.0",
+    "jest-watch-typeahead": "^0.6.4",
+    "react-test-renderer": "^17.0.2",
+    "start-server-and-test": "^1.14.0",
     "typescript": "4.4.2"
   }
 }
