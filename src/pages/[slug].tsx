@@ -1,6 +1,5 @@
 import type { NextPage, GetStaticProps } from 'next'
 import Head from 'next/head'
-import kebabCase from 'lodash/kebabCase'
 import { useTheme } from '@emotion/react'
 
 import { Meal, MealAPI } from '~/utils/api'
@@ -8,6 +7,13 @@ import { Image } from '~/components/Image'
 import { Heading } from '~/components/text'
 import { IngredientsList } from '~/components/IngredientsList'
 import { Instructions } from '~/components/Instructions'
+import { SecondaryNavbar } from '~/components/navbars/SecondaryNavbar'
+import styled from '@emotion/styled'
+
+const CopyContainer = styled.div`
+  padding: ${(props) => props.theme.space.md}px
+    ${(props) => props.theme.space.sm}px;
+`
 
 export interface MealDetailPageProps {
   meal?: Meal
@@ -25,12 +31,10 @@ const MealDetailPage: NextPage<MealDetailPageProps> = ({ meal }) => {
     <div>
       <Head>
         <title>{name}</title>
-        <meta
-          name="description"
-          content={`receipe for a delicious ${name} meal`}
-        />
+        <meta name="description" content={`receipe for a delicious ${name}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <SecondaryNavbar />
 
       <main>
         <Image
@@ -38,9 +42,11 @@ const MealDetailPage: NextPage<MealDetailPageProps> = ({ meal }) => {
           alt={`${name} meal`}
           aspectRatio={aspectRatios.primary}
         />
-        <Heading variant="heading2">{name}</Heading>
-        <IngredientsList ingredients={meal.ingredients} />
-        <Instructions heading={'Directions'} instructions={instructions} />
+        <CopyContainer>
+          <Heading variant="heading2">{name}</Heading>
+          <IngredientsList ingredients={meal.ingredients} />
+          <Instructions heading={'Directions'} instructions={instructions} />
+        </CopyContainer>
       </main>
     </div>
   )

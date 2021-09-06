@@ -8,8 +8,10 @@ const theme = {
   },
   colors: {
     blue: '#07c',
-    lightgray: '#f6f6ff',
+    gray: '#343434',
+    red: '#fb0007',
     black: '#222222',
+    white: '#fff',
   },
   space: {
     none: 0,
