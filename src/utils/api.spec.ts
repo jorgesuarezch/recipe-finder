@@ -106,6 +106,7 @@ describe('MealAPIUtils - transformMeal', () => {
     expect(MealAPIUtils.transformMeal(rawMeal)).toEqual({
       id: rawMeal.idMeal,
       name: rawMeal.strMeal,
+      slug: 'timbits-52929',
       image: rawMeal.strMealThumb,
       instructions: rawMeal.strInstructions,
       ingredients: [

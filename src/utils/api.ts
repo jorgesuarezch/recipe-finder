@@ -1,5 +1,8 @@
 import axios from 'axios'
+
 import range from 'lodash/range'
+import kebabCase from 'lodash/kebabCase'
+import { isNil, isNumber, last } from 'lodash'
 
 const instance = axios.create({
   baseURL: 'https://www.themealdb.com/api/json/v1/1', // TODO: move to env variable
@@ -9,6 +12,7 @@ const instance = axios.create({
 enum Paths {
   Search = '/search.php',
   Random = '/random.php',
+  Lookup = '/lookup.php',
 }
 /**
  * This is the raw meal response object type that comes from the API
@@ -83,6 +87,7 @@ export interface Ingredient {
 
 export interface Meal {
   id: string
+  slug: string
   name: string
   image: string
   ingredients: Ingredient[]
@@ -90,7 +95,7 @@ export interface Meal {
 }
 
 export namespace MealAPI {
-  export const getRandomRecipe = async (): Promise<Meal> => {
+  export const getRandomMeal = async (): Promise<Meal> => {
     const response = await instance.get<RawMealAPIBaseResponse>(
       `${Paths.Random}`
     )
@@ -103,7 +108,24 @@ export namespace MealAPI {
     return MealAPIUtils.transformMeal(meal)
   }
 
-  export const searchRecipeByName = async (name: string): Promise<Meal[]> => {
+  export const getMealBySlug = async (slug: string): Promise<Meal | null> => {
+    const id = MealAPIUtils.extractIdFromSlug(slug)
+
+    const response = await instance.get<RawMealAPIBaseResponse>(
+      `${Paths.Lookup}`,
+      { params: { i: id } }
+    )
+
+    const meal = response.data.meals?.[0]
+
+    if (!meal) {
+      throw Error('meal not found')
+    }
+
+    return MealAPIUtils.transformMeal(meal)
+  }
+
+  export const searchMealByName = async (name: string): Promise<Meal[]> => {
     const response = await instance.get<RawMealAPIBaseResponse>(
       `${Paths.Search}`,
       { params: { s: name } }
@@ -141,8 +163,33 @@ export namespace MealAPIUtils {
   export const transformMeal = (meal: RawMealObject): Meal => ({
     id: meal.idMeal,
     name: meal.strMeal,
+    slug: MealAPIUtils.generateSlug(meal),
     image: meal.strMealThumb,
     instructions: meal.strInstructions,
     ingredients: MealAPIUtils.extractIngredients(meal),
   })
+
+  export const generateSlug = (meal: RawMealObject) =>
+    `${kebabCase(meal.strMeal)}-${meal.idMeal}`
+
+  /**
+   * Extracts the ID from the slug
+   * @param slug
+   * @returns
+   */
+  export const extractIdFromSlug = (slug: string): number => {
+    const id = last(slug.split('-'))
+
+    if (isNil(id)) {
+      throw Error('invalid slug')
+    }
+
+    const numericId = parseInt(id)
+
+    if (!isNumber(numericId) || isNaN(numericId)) {
+      throw Error(`invalid id: '${id}'`)
+    }
+
+    return numericId
+  }
 }

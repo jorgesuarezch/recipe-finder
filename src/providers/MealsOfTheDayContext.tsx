@@ -70,9 +70,10 @@ export const MealsProvider = ({ children }: MealsProviderProps) => {
   useEffect(() => {
     // checks if it is necessary refresh the meals of the day
     if (
-      state.timestamp !== null &&
-      state.mealsOfTheDay.length &&
-      differenceInCalendarDays(new Date(), new Date(state.timestamp)) === 0
+      state.loading ||
+      (state.timestamp !== null &&
+        state.mealsOfTheDay.length &&
+        differenceInCalendarDays(new Date(), new Date(state.timestamp)) === 0)
     ) {
       return
     }
@@ -96,7 +97,7 @@ export const MealsProvider = ({ children }: MealsProviderProps) => {
     }
 
     setMealsOfTheDay()
-  }, [])
+  }, [state])
 
   return (
     <MealsStateContext.Provider value={value}>
@@ -132,7 +133,7 @@ const fetchMealsOfTheDay = async () => {
     return cachedValue.meals
   }
 
-  const meals = await Promise.all(range(5).map(() => MealAPI.getRandomRecipe()))
+  const meals = await Promise.all(range(5).map(() => MealAPI.getRandomMeal()))
 
   // saves meals in the loacl storage
   localStorage.setItem(
