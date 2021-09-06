@@ -13,7 +13,8 @@ const Container = styled.a`
 
 const StyledHeading = styled(Heading)`
   display: block;
-  margin-bottom: ${(props) => props.theme.space.md}px;
+  max-width: 80%;
+  margin: 0 auto ${(props) => props.theme.space.md}px;
   text-align: center;
 `
 

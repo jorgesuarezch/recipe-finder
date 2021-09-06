@@ -6,7 +6,11 @@ const stylesH2Variant = (theme: Theme) => css`
 `
 
 const stylesH3Variant = (theme: Theme) => css`
+  font-family: ${theme.fonts.body}px;
   font-size: ${theme.fontSizes.heading3}px;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.1em;
 `
 
 const H2 = styled.h2<{ variant?: HeadingProps['variant'] }>`

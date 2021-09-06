@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import { MealCard } from '~/components/MealCard'
+import { HomePageHero } from '~/components/heroes/HomePageHero'
 import { useMealsOfTheDay } from '~/providers/MealsOfTheDayContext'
 
 const Home: NextPage = () => {
@@ -16,6 +17,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
+        <HomePageHero heading="Recipes of the day" />
         {state.mealsOfTheDay.map((meal) => {
           return (
             <MealCard
