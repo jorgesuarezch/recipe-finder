@@ -57,14 +57,14 @@ jobs:
         with:
           start: yarn start
 
-      # - name: Save build folder
-      #   uses: actions/upload-artifact@v2
-      #   if: failure()
-      #   with:
-      #     name: e2e-artifacts
-      #     path: |
-      #       cypress/screenshots
-      #       cypress/videos
+      - name: Save build folder
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: e2e-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
 
   deploy:
     # Only deploy when is the production branch
