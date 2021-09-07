@@ -39,4 +39,4 @@ USER nextjs
 # Uncomment the following line in case you want to disable telemetry.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-CMD ["yarn", "start", "-p", "$PORT"]
+CMD ["yarn", "serve", "-p", "$PORT"]
