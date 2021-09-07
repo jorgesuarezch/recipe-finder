@@ -7,17 +7,27 @@ import Heart from '~/components/icons/Heart'
 import HeartSolid from '~/components/icons/HeartSolid'
 import Search from '~/components/icons/Search'
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ variant?: ButtonProps['variant'] }>`
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: ${(props) => props.theme.colors.gray};
   width: ${(props) => props.theme.space.lg}px;
   height: ${(props) => props.theme.space.lg}px;
   font-size: 42px;
+  cursor: pointer;
+
+  background: ${(props) => {
+    switch (props.variant) {
+      case 'red':
+        return props.theme.colors.red
+
+      default:
+        return props.theme.colors.gray
+    }
+  }};
 `
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {

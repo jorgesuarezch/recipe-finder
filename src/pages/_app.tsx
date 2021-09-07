@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <MealsProvider>
         <Head>
+          <link rel="icon" href="/logo.png" />
           <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap"
             rel="stylesheet"

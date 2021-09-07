@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 import range from 'lodash/range'
 import kebabCase from 'lodash/kebabCase'
@@ -95,9 +95,12 @@ export interface Meal {
 }
 
 export namespace MealAPI {
-  export const getRandomMeal = async (): Promise<Meal> => {
+  export const getRandomMeal = async (
+    config?: AxiosRequestConfig
+  ): Promise<Meal> => {
     const response = await instance.get<RawMealAPIBaseResponse>(
-      `${Paths.Random}`
+      `${Paths.Random}`,
+      config
     )
 
     if (response.data.meals === null) {
@@ -108,12 +111,15 @@ export namespace MealAPI {
     return MealAPIUtils.transformMeal(meal)
   }
 
-  export const getMealBySlug = async (slug: string): Promise<Meal | null> => {
+  export const getMealBySlug = async (
+    slug: string,
+    config?: AxiosRequestConfig
+  ): Promise<Meal | null> => {
     const id = MealAPIUtils.extractIdFromSlug(slug)
 
     const response = await instance.get<RawMealAPIBaseResponse>(
       `${Paths.Lookup}`,
-      { params: { i: id } }
+      { params: { i: id }, ...config }
     )
 
     const meal = response.data.meals?.[0]
@@ -125,10 +131,13 @@ export namespace MealAPI {
     return MealAPIUtils.transformMeal(meal)
   }
 
-  export const searchMealByName = async (name: string): Promise<Meal[]> => {
+  export const searchMealByName = async (
+    name: string,
+    config?: AxiosRequestConfig
+  ): Promise<Meal[]> => {
     const response = await instance.get<RawMealAPIBaseResponse>(
       `${Paths.Search}`,
-      { params: { s: name } }
+      { params: { s: name }, ...config }
     )
 
     if (response.data.meals === null) {
