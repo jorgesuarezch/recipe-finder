@@ -14,6 +14,11 @@ const Container = styled.a`
 const StyledHeading = styled(Heading)`
   display: block;
   max-width: 80%;
+  word-wrap: nowrap;
+  white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
   margin: 0 auto ${(props) => props.theme.space.md}px;
   text-align: center;
 `
@@ -28,7 +33,7 @@ export const MealCard = ({ heading, image, url }: MealCardProps) => {
   const { aspectRatios } = useTheme()
   return (
     <Link href={url} passHref>
-      <Container>
+      <Container title={heading} data-test="meal-card">
         <StyledHeading>{heading}</StyledHeading>
         <Image
           src={image}

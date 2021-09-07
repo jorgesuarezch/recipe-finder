@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor } from '~tests/utils'
+import { render, screen } from '~tests/utils'
 import { Button } from './Button'
 
 describe('Button Component', () => {
@@ -24,9 +24,7 @@ describe('Button Component', () => {
   })
 
   it('Should render an empty button if the icon given is not valid', async () => {
-    const { container } = render(
-      <Button icon={'fake' as any} href="/" aria-label="empty button" />
-    )
+    render(<Button icon={'fake' as any} href="/" aria-label="empty button" />)
 
     expect(screen.getByLabelText(`empty button`)).toBeEmptyDOMElement()
   })

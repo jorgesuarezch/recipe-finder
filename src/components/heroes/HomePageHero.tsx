@@ -35,8 +35,6 @@ const H1 = styled(Heading)`
   text-align: center;
 `
 
-const Logo = styled.img``
-
 export interface HomePageHeroProps {
   heading: string
 }

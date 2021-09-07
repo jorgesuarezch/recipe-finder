@@ -9,6 +9,7 @@ import { IngredientsList } from '~/components/IngredientsList'
 import { Instructions } from '~/components/Instructions'
 import { SecondaryNavbar } from '~/components/navbars/SecondaryNavbar'
 import styled from '@emotion/styled'
+import { Container } from '~/components/layout/Container'
 
 const CopyContainer = styled.div`
   padding: ${(props) => props.theme.space.md}px
@@ -28,15 +29,15 @@ const MealDetailPage: NextPage<MealDetailPageProps> = ({ meal }) => {
   const { name, image, instructions } = meal
 
   return (
-    <div>
+    <>
       <Head>
         <title>{name}</title>
         <meta name="description" content={`receipe for a delicious ${name}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <SecondaryNavbar />
+      <SecondaryNavbar meal={meal} />
 
-      <main>
+      <Container>
         <Image
           src={image}
           alt={`${name} meal`}
@@ -47,8 +48,8 @@ const MealDetailPage: NextPage<MealDetailPageProps> = ({ meal }) => {
           <IngredientsList ingredients={meal.ingredients} />
           <Instructions heading={'Directions'} instructions={instructions} />
         </CopyContainer>
-      </main>
-    </div>
+      </Container>
+    </>
   )
 }
 

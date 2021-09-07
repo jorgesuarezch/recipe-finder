@@ -44,6 +44,7 @@ export const Image = ({
   }
   return (
     <Wrapper aspectRatio={ratio}>
+      {/*eslint-disable @next/next/no-img-element */}
       <img loading="lazy" alt={alt} {...props} />
     </Wrapper>
   )

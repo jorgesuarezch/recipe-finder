@@ -1,5 +1,32 @@
+import { mediaFactory } from './utils'
+
+const breakpoints = {
+  sm: 640,
+  md: 900,
+  lg: 1200,
+  xl: 1600,
+}
+
+/**
+ * media query helper fo using in styled components
+ *
+ * @example
+ *
+ * const  A = styled.div`
+ *  ${media.lg`
+ *    color: pink;
+ * `}
+ * `
+ */
+export const media = {
+  sm: mediaFactory(breakpoints, 'sm'),
+  md: mediaFactory(breakpoints, 'md'),
+  lg: mediaFactory(breakpoints, 'lg'),
+  xl: mediaFactory(breakpoints, 'xl'),
+}
+
 const theme = {
-  breakpoints: [640, 1200, 1600],
+  breakpoints,
   fontSizes: {
     heading: 36,
     heading2: 32,
@@ -39,6 +66,12 @@ const theme = {
   aspectRatios: {
     primary: 9 / 16,
   },
+  sizes: {
+    navbar: 80,
+    container: 1200,
+  },
+
+  media,
   // shadows: {
   //   small: '0 0 4px rgba(0, 0, 0, .125)',
   //   large: '0 0 24px rgba(0, 0, 0, .125)',
