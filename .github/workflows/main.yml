@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   setup:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -41,7 +41,7 @@ jobs:
 
   e2e:
     needs: setup
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -57,20 +57,20 @@ jobs:
         with:
           start: yarn start
 
-      - name: Save build folder
-        uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: e2e-artifacts
-          path: |
-            cypress/screenshots
-            cypress/videos
+      # - name: Save build folder
+      #   uses: actions/upload-artifact@v2
+      #   if: failure()
+      #   with:
+      #     name: e2e-artifacts
+      #     path: |
+      #       cypress/screenshots
+      #       cypress/videos
 
   deploy:
     # Only deploy when is the production branch
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: e2e
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
