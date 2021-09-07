@@ -40,7 +40,7 @@ export const SearchInput = ({ placeholder }: SearchInputProps) => {
   const isSearchOn = useGlobalSearchContext()
 
   /**
-   * Focused the input when search is on
+   * Initialize input depending on search context is active o
    */
   useEffect(() => {
     if (isSearchOn) {
@@ -49,6 +49,7 @@ export const SearchInput = ({ placeholder }: SearchInputProps) => {
       setValue('')
       setGlobalSearchResults([])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSearchOn])
 
   useEffect(() => {
@@ -85,6 +86,7 @@ export const SearchInput = ({ placeholder }: SearchInputProps) => {
     return () => {
       source.cancel('axios request cancelled')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   return (

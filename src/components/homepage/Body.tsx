@@ -1,7 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import { MealCard } from '~/components/MealCard'
+import { Button } from '~/components/Button'
+import { GridOfMealCards } from '~/components/GridOfMealCards'
 import { HomePageHero } from '~/components/heroes/HomePageHero'
 import { SearchNavbar } from '~/components/navbars/SearchNavbar'
 import { useMealsOfTheDay } from '~/providers/MealsOfTheDayContext'
@@ -18,14 +19,16 @@ const Main = styled.main<{ paddedTop?: boolean }>`
   padding-top: ${(props) => (props.paddedTop ? props.theme.sizes.navbar : 0)}px;
 `
 
-const Grid = styled.div`
+const FloatingContainer = styled.div<{ isVisible?: boolean }>`
   display: grid;
-  grid-template-columns: 100%;
-
-  ${(props) => props.theme.media.md`
-    grid-template-columns: 50% 50%;
-    column-gap: ${props.theme.space.sm}px;
-  `}
+  grid-row-gap: ${(props) => props.theme.space.sm}px;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  transform: ${(props) =>
+    props.isVisible ? `translate3d(0, 0, 0)` : `translate3d(200px, 0, 0)`};
+  visibility: ${(props) => (props.isVisible ? `visible` : `hidden`)};
+  transition: 150ms ease-in-out;
 `
 
 export const Body: NextPage = () => {
@@ -50,21 +53,17 @@ export const Body: NextPage = () => {
               no results
             </Heading>
           )}
-          <Grid>
-            {meals.map((meal) => {
-              return (
-                <MealCard
-                  image={meal.image}
-                  heading={meal.name}
-                  url={`/${meal.slug}`}
-                  key={meal.slug}
-                />
-              )
-            })}
-          </Grid>
+          <GridOfMealCards meals={meals} />
         </Container>
       </Main>
-      <SearchFloatingButton />
+      <FloatingContainer isVisible={!isSearchOn}>
+        <Button
+          icon="heart-solid"
+          href="/favorites"
+          aria-label="See my favorites"
+        />
+        <SearchFloatingButton />
+      </FloatingContainer>
     </>
   )
 }

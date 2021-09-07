@@ -1,4 +1,4 @@
-import { css, Theme, useTheme } from '@emotion/react'
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 

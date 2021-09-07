@@ -35,7 +35,7 @@ const MealDetailPage: NextPage<MealDetailPageProps> = ({ meal }) => {
         <meta name="description" content={`receipe for a delicious ${name}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <SecondaryNavbar />
+      <SecondaryNavbar meal={meal} />
 
       <Container>
         <Image
