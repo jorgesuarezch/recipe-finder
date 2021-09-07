@@ -17,6 +17,7 @@ import { SearchFloatingButton } from '~/components/homepage/SearchFloatingButton
 import styled from '@emotion/styled'
 import { Heading } from '../text'
 import { Container } from '../layout/Container'
+import { useFavoritesContext } from '~/providers/FavoritesContextProvider'
 
 const Main = styled.main<{ paddedTop?: boolean }>`
   padding-top: ${(props) => (props.paddedTop ? props.theme.sizes.navbar : 0)}px;
@@ -36,10 +37,13 @@ const FloatingContainer = styled.div<{ isVisible?: boolean }>`
 
 export const Body: NextPage = () => {
   const state = useMealsOfTheDayContext()
+  const favorites = useFavoritesContext()
   const results = useGlobalSearchResultsContext()
   const isSearchOn = useGlobalSearchContext()
 
   const meals = isSearchOn ? results : state.meals
+  const hasFavorites = Object.values(favorites).length > 0
+
   return (
     <>
       <Head>
@@ -60,11 +64,13 @@ export const Body: NextPage = () => {
         </Container>
       </Main>
       <FloatingContainer isVisible={!isSearchOn}>
-        <Button
-          icon="heart-solid"
-          href="/favorites"
-          aria-label="See my favorites"
-        />
+        {hasFavorites && (
+          <Button
+            icon="heart-solid"
+            href="/favorites"
+            aria-label="See my favorites"
+          />
+        )}
         <SearchFloatingButton />
       </FloatingContainer>
     </>
@@ -77,7 +83,7 @@ const getHeadingText = ({ loading, error }: MealsOfTheDayContexState) => {
   }
 
   if (error) {
-    return 'Oops we are having some issues loading recipes of the day. Please try later.'
+    return 'Oops! we are having some issues loading recipes of the day. Please try later.'
   }
   return 'Recipes of the day'
 }

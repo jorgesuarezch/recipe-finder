@@ -33,7 +33,7 @@ export const MealCard = ({ heading, image, url }: MealCardProps) => {
   const { aspectRatios } = useTheme()
   return (
     <Link href={url} passHref>
-      <Container title={heading}>
+      <Container title={heading} data-test="meal-card">
         <StyledHeading>{heading}</StyledHeading>
         <Image
           src={image}

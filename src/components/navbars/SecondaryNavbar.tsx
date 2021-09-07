@@ -13,7 +13,7 @@ export const SecondaryNavbar = ({ meal }: SecondaryNavbarProps) => {
   const router = useRouter()
   return (
     <BaseNavbar>
-      <Button icon="arrow-left" onClick={router.back} />
+      <Button icon="arrow-left" aria-label="go back" onClick={router.back} />
       {meal && <FavoriteToggleButton meal={meal} />}
     </BaseNavbar>
   )

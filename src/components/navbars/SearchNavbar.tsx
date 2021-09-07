@@ -39,9 +39,13 @@ export const SearchNavbar = () => {
   }, [inputRef, isSearchOn])
 
   return (
-    <Navbar isVisible={isSearchOn}>
+    <Navbar isVisible={isSearchOn} data-test="searchbar">
       <ItemsContainer>
-        <Button icon="arrow-left" onClick={() => setGlobalSearchOn(false)} />
+        <Button
+          icon="arrow-left"
+          aria-label="go back"
+          onClick={() => setGlobalSearchOn(false)}
+        />
         <SearchInput placeholder="I'm craving..." defaultValue="appl" />
       </ItemsContainer>
     </Navbar>

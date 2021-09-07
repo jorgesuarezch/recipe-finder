@@ -15,5 +15,11 @@ export const FavoriteToggleButton = ({ meal }: FavoriteToggleButtonProps) => {
   const isFavorited = Boolean(favorites[meal.id])
   const icon = isFavorited ? 'heart-solid' : 'heart'
 
-  return <Button icon={icon} onClick={() => toogleFavorite(meal)} />
+  return (
+    <Button
+      aria-label="add to favorites"
+      icon={icon}
+      onClick={() => toogleFavorite(meal)}
+    />
+  )
 }

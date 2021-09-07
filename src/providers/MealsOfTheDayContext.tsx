@@ -72,6 +72,7 @@ export const MealsOfTheDayContextProvider: React.FC = ({ children }) => {
     // checks if it is necessary refresh the meals of the day
     if (
       state.loading ||
+      state.error ||
       (state.timestamp !== null &&
         state.meals.length &&
         differenceInCalendarDays(new Date(), new Date(state.timestamp)) === 0)
