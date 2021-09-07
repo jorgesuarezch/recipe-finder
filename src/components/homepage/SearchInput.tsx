@@ -68,7 +68,7 @@ export const SearchInput = ({ placeholder }: SearchInputProps) => {
         })
 
         setGlobalSearchResults(results)
-      } catch (error) {
+      } catch (error: any) {
         if (axios.isCancel(error)) {
           console.log('Request canceled', error.message)
         } else {
