@@ -4,33 +4,35 @@ import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 import range from 'lodash/range'
 
 import { Meal, MealAPI } from '~/utils/api'
+import { useContextFactory } from './utils'
 
 type Action =
   | { type: 'refresh'; payload: { meals: Meal[] } }
   | { type: 'error'; payload: { message: string } }
   | { type: 'loading' }
 
-type Dispatch = (action: Action) => void
-type State = {
-  mealsOfTheDay: Meal[]
+export type MealsOfTheDayContexState = {
+  meals: Meal[]
   loading?: boolean
   error?: string
   timestamp: number | null
 }
 
-type MealsProviderProps = { children: React.ReactNode }
-
-const MealsStateContext = React.createContext<
-  { state: State; dispatch: Dispatch } | undefined
+const MealsOfTheDayContext = React.createContext<
+  MealsOfTheDayContexState | undefined
 >(undefined)
 
-function mealsReducer(state: State, action: Action): State {
+function mealsReducer(
+  state: MealsOfTheDayContexState,
+  action: Action
+): MealsOfTheDayContexState {
   switch (action.type) {
     case 'refresh': {
       return {
         ...state,
-        mealsOfTheDay: action.payload.meals,
+        meals: action.payload.meals,
         timestamp: +new Date(),
+        error: undefined,
         loading: false,
       }
     }
@@ -38,6 +40,7 @@ function mealsReducer(state: State, action: Action): State {
       return {
         ...state,
         loading: true,
+        error: undefined,
       }
     }
     case 'error': {
@@ -55,24 +58,22 @@ function mealsReducer(state: State, action: Action): State {
 
 /**
  * Provides the 5 random meals of the day
- * The idea here is to keep the meals even if the user refreshes the page by using the local storage.
+ * The idea here is to persist the meals so when the user refreshes the page they get the same until the date change.
  * @param param0
  * @returns
  */
-export const MealsProvider = ({ children }: MealsProviderProps) => {
+export const MealsOfTheDayContextProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(mealsReducer, {
-    mealsOfTheDay: [],
+    meals: [],
     timestamp: null,
   })
-
-  const value = { state, dispatch }
 
   useEffect(() => {
     // checks if it is necessary refresh the meals of the day
     if (
       state.loading ||
       (state.timestamp !== null &&
-        state.mealsOfTheDay.length &&
+        state.meals.length &&
         differenceInCalendarDays(new Date(), new Date(state.timestamp)) === 0)
     ) {
       return
@@ -100,19 +101,18 @@ export const MealsProvider = ({ children }: MealsProviderProps) => {
   }, [state])
 
   return (
-    <MealsStateContext.Provider value={value}>
+    <MealsOfTheDayContext.Provider value={state}>
       {children}
-    </MealsStateContext.Provider>
+    </MealsOfTheDayContext.Provider>
   )
 }
 
-export const useMealsOfTheDay = () => {
-  const context = React.useContext(MealsStateContext)
-  if (context === undefined) {
-    throw new Error('useMeals must be used within a MealsProvider')
-  }
-  return context
-}
+export const useMealsOfTheDayContext = useContextFactory(
+  'MealsOfTheDayContext',
+  MealsOfTheDayContext
+)
+
+const MEALS_OF_THE_DAY_KEY = 'mealsOfTheDay'
 
 /**
  * Fetches the random meals per day, and store them in the localstorage.
@@ -121,7 +121,7 @@ export const useMealsOfTheDay = () => {
 const fetchMealsOfTheDay = async () => {
   // check if they are already stored
   const cachedValue: { meals?: Meal[]; timestamp?: number } = JSON.parse(
-    localStorage.getItem('mealsOfTheDay') || '{}'
+    localStorage.getItem(MEALS_OF_THE_DAY_KEY) || '{}'
   )
 
   if (
@@ -133,11 +133,12 @@ const fetchMealsOfTheDay = async () => {
     return cachedValue.meals
   }
 
+  // TODO: make sure random recipes are unique
   const meals = await Promise.all(range(5).map(() => MealAPI.getRandomMeal()))
 
-  // saves meals in the loacl storage
+  // saves meals in the local storage
   localStorage.setItem(
-    'mealsOfTheDay',
+    MEALS_OF_THE_DAY_KEY,
     JSON.stringify({ meals, timestamp: +new Date() })
   )
 

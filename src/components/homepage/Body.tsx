@@ -5,7 +5,10 @@ import { Button } from '~/components/Button'
 import { GridOfMealCards } from '~/components/GridOfMealCards'
 import { HomePageHero } from '~/components/heroes/HomePageHero'
 import { SearchNavbar } from '~/components/navbars/SearchNavbar'
-import { useMealsOfTheDay } from '~/providers/MealsOfTheDayContext'
+import {
+  MealsOfTheDayContexState,
+  useMealsOfTheDayContext,
+} from '~/providers/MealsOfTheDayContext'
 import {
   useGlobalSearchContext,
   useGlobalSearchResultsContext,
@@ -32,11 +35,11 @@ const FloatingContainer = styled.div<{ isVisible?: boolean }>`
 `
 
 export const Body: NextPage = () => {
-  const { state } = useMealsOfTheDay()
+  const state = useMealsOfTheDayContext()
   const results = useGlobalSearchResultsContext()
   const isSearchOn = useGlobalSearchContext()
 
-  const meals = isSearchOn ? results : state.mealsOfTheDay
+  const meals = isSearchOn ? results : state.meals
   return (
     <>
       <Head>
@@ -47,7 +50,7 @@ export const Body: NextPage = () => {
       <SearchNavbar />
       <Main paddedTop={isSearchOn}>
         <Container>
-          {!isSearchOn && <HomePageHero heading="Recipes of the day" />}
+          {!isSearchOn && <HomePageHero heading={getHeadingText(state)} />}
           {isSearchOn && meals.length === 0 && (
             <Heading variant="heading3" as="p">
               no results
@@ -66,4 +69,15 @@ export const Body: NextPage = () => {
       </FloatingContainer>
     </>
   )
+}
+
+const getHeadingText = ({ loading, error }: MealsOfTheDayContexState) => {
+  if (loading) {
+    return 'Loading recipes of the day...'
+  }
+
+  if (error) {
+    return 'Oops we are having some issues loading recipes of the day. Please try later.'
+  }
+  return 'Recipes of the day'
 }
