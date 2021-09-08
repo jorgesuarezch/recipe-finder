@@ -91,6 +91,7 @@ export const MealsOfTheDayContextProvider: React.FC = ({ children }) => {
           payload: { meals },
         })
       } catch (error) {
+        console.error(error)
         dispatch({
           type: 'error',
           payload: { message: 'error fetching the meals of the day' },
