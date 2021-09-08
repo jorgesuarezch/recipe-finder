@@ -6,7 +6,7 @@ import { isNil, isNumber, last } from 'lodash'
 
 const instance = axios.create({
   baseURL: 'https://www.themealdb.com/api/json/v1/1', // TODO: move to env variable
-  timeout: 1000,
+  timeout: 10000, // 10 seconds
 })
 
 enum Paths {
